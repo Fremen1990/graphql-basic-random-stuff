@@ -1,12 +1,15 @@
-const {ApolloServer, ServerInfo} = require("apollo-server")
+const {ApolloServer, gql} = require("apollo-server")
 
-const typeDefs = `
-type Query {
-greeting : String}
-`
+const typeDefs = gql`  type Query {  greeting : String, interestingUrls: [String]}  `
+
+const data = {
+    greeting: "Hello World!!!!!!!",
+    interestingUrls: ["https://www.google.com", "https://www.youtube.com"]
+
+}
 
 const server = new ApolloServer({
-    typeDefs
+    typeDefs, rootValue: data
 })
 server.listen({port: 4000}).then((result) => {
     console.log(`Server ready at ${result.url}`)
