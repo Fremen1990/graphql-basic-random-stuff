@@ -2,14 +2,16 @@ const {ApolloServer, gql} = require("apollo-server")
 
 const PORT = process.env.PORT || 4000
 
-const typeDefs = gql`  type Query {  greeting : String,
-    interestingUrls: [String],
+const typeDefs = gql`  type Query {
+    greeting : String!,
+    schrodingerCatGreeting: String,
+    interestingUrls: [String!]!,
     randomDiceThrow: [Int],
-    pi:Float,
-    isItFriday: Boolean,
-    randomCoinTossesUntilTrue: [Boolean]
-    today: DayOfWeek
-    workDays: [DayOfWeek]
+    pi:Float!,
+    isItFriday: Boolean!,
+    randomCoinTossesUntilTrue: [Boolean!]!
+    today: DayOfWeek!
+    workDays: [DayOfWeek!]!
 }
 enum DayOfWeek {
     MON
@@ -41,7 +43,8 @@ function rootValue() {
         return tosses
     }
     return {
-        greeting: "Hello World!!!!!!!",
+        greeting: "Hello world!",
+        schrodingerCatGreeting: randomCoinToss()? "Meow" : null,
         interestingUrls: ["https://www.google.com", "https://www.youtube.com"],
         randomDiceThrow: [getRandomDiceThrow(6), getRandomDiceThrow(6), getRandomDiceThrow(6)],
         pi: Math.PI,
