@@ -2,13 +2,14 @@ const {ApolloServer, gql} = require("apollo-server")
 const Quotes =  require("inspirational-quotes")
 const PORT = process.env.PORT || 4000
 
-const typeDefs = gql`  
-    
+const typeDefs = gql`
+
     schema {
         query: MyQuery
     }
-    
+
     type MyQuery {
+        "A simple greeting"
         greeting : String!,
         schrodingerCatGreeting: String,
         interestingUrls: [String!]!,
@@ -19,24 +20,30 @@ const typeDefs = gql`
         today: DayOfWeek!
         workDays: [DayOfWeek!]!,
         randomQuote: Quote!
-}
+    }
 
-type Quote {
-    text: String
-    author: String
-}
+    enum DayOfWeek {
+        MON
+        TUE
+        WED
+        THU
+        FRI
+        SAT
+        SUN
+    }
+    """
+    ### The object representing a quote
 
-enum DayOfWeek {
-    MON
-    TUE
-    WED
-    THU
-    FRI
-    SAT
-    SUN
-}
+     It contains the following fields:
+    - text: String
+    - author: String
+    """
+    type Quote {
+        text: String
+        author: String
+    }
 
-,`
+    ,`
 
 function rootValue() {
     const getRandomDiceThrow = (sides) => {
