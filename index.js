@@ -8,13 +8,27 @@ const typeDefs = gql`  type Query {  greeting : String,
     pi:Float,
     isItFriday: Boolean,
     randomCoinTossesUntilTrue: [Boolean]
-},`
+    today: DayOfWeek
+    workDays: [DayOfWeek]
+}
+enum DayOfWeek {
+    MON
+    TUE
+    WED
+    THU
+    FRI
+    SAT
+    SUN
+}
+
+,`
 
 function rootValue() {
     const getRandomDiceThrow = (sides) => {
         return Math.floor(Math.random() * sides) + 1
     }
     const today = new Date().getDay()
+    const DAYS_OF_WEEK = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
     const randomCoinToss = () => Math.random() < 0.5
     const getRandomCoinTossesUntilTrue = () => {
         const tosses = []
@@ -32,7 +46,9 @@ function rootValue() {
         randomDiceThrow: [getRandomDiceThrow(6), getRandomDiceThrow(6), getRandomDiceThrow(6)],
         pi: Math.PI,
         isItFriday: today === 5,
-        randomCoinTossesUntilTrue: getRandomCoinTossesUntilTrue()
+        randomCoinTossesUntilTrue: getRandomCoinTossesUntilTrue(),
+        today: DAYS_OF_WEEK[today],
+        workDays: DAYS_OF_WEEK.slice(1, 6)
     }
 }
 
