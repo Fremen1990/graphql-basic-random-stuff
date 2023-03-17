@@ -170,8 +170,7 @@ const data = {
       name: "Alice",
       email: "alice@example.com",
       avatar: {
-        imagePath: "/images/avatars/w13.png",
-
+        image: { path: "/images/avatars/w13.png" },
         color: "yellow",
       },
     },
@@ -179,8 +178,7 @@ const data = {
       name: "Bob",
       email: "bob@example.com",
       avatar: {
-        imagePath: "/images/avatars/m10.png",
-
+        image: { path: "/images/avatars/m10.png" },
         color: "green",
       },
     },
@@ -188,8 +186,7 @@ const data = {
       name: "Celine",
       email: "celine@example.com",
       avatar: {
-        imagePath: "/images/avatars/w2.png",
-
+        image: { Path: "/images/avatars/w2.png" },
         color: "red",
       },
     },
@@ -197,8 +194,7 @@ const data = {
       name: "Dan",
       email: "dan@example.com",
       avatar: {
-        imagePath: "/images/avatars/m25.png",
-
+        image: { path: "/images/avatars/m25.png" },
         color: "blue",
       },
     },

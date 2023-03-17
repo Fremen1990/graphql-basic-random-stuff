@@ -41,7 +41,7 @@ const typeDefs = gql`
 
   type Avatar {
     image: Image!
-    color: String!
+    color: String
   }
 `;
 
