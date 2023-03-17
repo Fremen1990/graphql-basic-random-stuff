@@ -1,12 +1,20 @@
 const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./typeDefs");
-const rootValue = require("./rootValue");
+
+const resolvers = require("./resolvers");
+const db = require("./db");
 
 const PORT = process.env.PORT || 4000;
+const ASSETS_BASE_URL =
+  process.env.ASSETS_BASE_URL || "http://examples.devmastery.pl/assets";
 
 const server = new ApolloServer({
   typeDefs,
-  rootValue: rootValue,
+  resolvers,
+  context: {
+    db,
+    assetsBaseUrl: ASSETS_BASE_URL,
+  },
   playground: true,
   introspection: true,
 });
