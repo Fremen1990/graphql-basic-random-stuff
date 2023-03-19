@@ -3,7 +3,6 @@ const typeDefs = gql`
   schema {
     query: Query
   }
-
   """
   ### The object representing a books
 
@@ -12,30 +11,29 @@ const typeDefs = gql`
   - author: String
   """
   type Query {
-    authors(searchQuery: String! = ""): [Author!]!
+    authors: [Author!]!
     author(id: ID!): Author
     books(searchQuery: String! = ""): [Book!]!
     book(id: ID!): Book
-    users(searchQuery: String! = ""): [User!]!
+    users: [User!]!
     user(id: ID!): User
+    anything(id: ID!): Anything
   }
-
-  type Book {
-    id: ID!
-    title: String!
-    cover: Image!
-    description: String!
-    author: Author
-  }
-
+  union Anything = Book | Author | User
   type Author {
     id: ID!
     name: String!
     photo: Image!
     bio: String!
-    books: [Book]
+    books: [Book!]!
   }
-
+  type Book {
+    id: ID!
+    title: String!
+    cover: Image!
+    author: Author!
+    description: String!
+  }
   type User {
     id: ID!
     name: String!
@@ -43,14 +41,12 @@ const typeDefs = gql`
     info: String!
     avatar: Avatar!
   }
-
   type Image {
     url: String!
   }
-
   type Avatar {
     image: Image!
-    color: String
+    color: String!
   }
 `;
 
