@@ -19,7 +19,9 @@ const typeDefs = gql`
     users: [User!]!
     user(id: ID!): User
     anything(id: ID!): Anything
+      @deprecated(reason: "No longer supported, use 'resource' instead")
     everything: [Anything!]!
+      @deprecated(reason: "No longer supported, use 'resources' instead")
     resources: [Resource!]!
     resource(id: ID!): Resource
   }
