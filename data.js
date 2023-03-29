@@ -277,5 +277,127 @@ const data = {
     2: ["8", "9", "10", "11", "12", "13", "14"],
     3: ["15", "16", "17", "18", "19", "20"],
   },
+  bookCopies: [
+    {
+      ownerId: "1",
+      borrowerId: "2",
+      bookId: "1",
+    },
+    {
+      ownerId: "1",
+      borrowerId: "2",
+      bookId: "2",
+    },
+    {
+      ownerId: "1",
+      borrowerId: null,
+      bookId: "3",
+    },
+    {
+      ownerId: "1",
+      borrowerId: "3",
+      bookId: "4",
+    },
+    {
+      ownerId: "1",
+      borrowerId: null,
+      bookId: "5",
+    },
+    {
+      ownerId: "1",
+      borrowerId: "4",
+      bookId: "6",
+    },
+    {
+      ownerId: "1",
+      borrowerId: null,
+      bookId: "7",
+    },
+    {
+      ownerId: "2",
+      borrowerId: null,
+      bookId: "8",
+    },
+    {
+      ownerId: "2",
+      borrowerId: "3",
+      bookId: "9",
+    },
+    {
+      ownerId: "2",
+      borrowerId: "4",
+      bookId: "10",
+    },
+    {
+      ownerId: "3",
+      borrowerId: null,
+      bookId: "1",
+    },
+    {
+      ownerId: "3",
+      borrowerId: "4",
+      bookId: "4",
+    },
+    {
+      ownerId: "3",
+      borrowerId: "2",
+      bookId: "11",
+    },
+    {
+      ownerId: "3",
+      borrowerId: "2",
+      bookId: "12",
+    },
+    {
+      ownerId: "3",
+      borrowerId: null,
+      bookId: "13",
+    },
+    {
+      ownerId: "3",
+      borrowerId: null,
+      bookId: "14",
+    },
+    {
+      ownerId: "3",
+      borrowerId: "1",
+      bookId: "15",
+    },
+    {
+      ownerId: "4",
+      borrowerId: null,
+      bookId: "1",
+    },
+    {
+      ownerId: "4",
+      borrowerId: null,
+      bookId: "8",
+    },
+    {
+      ownerId: "4",
+      borrowerId: "1",
+      bookId: "16",
+    },
+    {
+      ownerId: "4",
+      borrowerId: "1",
+      bookId: "17",
+    },
+    {
+      ownerId: "4",
+      borrowerId: "1",
+      bookId: "18",
+    },
+    {
+      ownerId: "4",
+      borrowerId: null,
+      bookId: "19",
+    },
+    {
+      ownerId: "4",
+      borrowerId: null,
+      bookId: "20",
+    },
+  ],
 };
 module.exports = data;

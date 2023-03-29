@@ -50,12 +50,43 @@ const getUserById = (id) => {
 const getAllUsers = () =>
   data.users.map((user, index) => getUserById(toId(index)));
 
+const getBookCopyById = (id) => ({
+  ...data.bookCopies[toIndex(id)],
+  id,
+});
+
+const getAllBookCopies = () =>
+  data.bookCopies.map((bookCopy, index) => getBookCopyById(toId(index)));
+
+const getBookCopiesByBookId = (bookId) =>
+  getAllBookCopies().filter((bookCopy) => bookCopy.bookId === bookId);
+
+const getBookCopiesByUserId = (userId) =>
+  getAllBookCopies().filter((bookCopy) => bookCopy.owner.id === userId);
+
+const borrowBookCopy = (bookCopyId, borrowedId) => {
+  const index = toIndex(bookCopyId);
+  if (index < 0 || index >= data.bookCopies.length) {
+    throw new Error("Could not find book copy");
+  }
+  const bookCopy = data.bookCopies[index];
+  if (!!bookCopy.borrowerId) {
+    throw new Error("Cannot borrow the bool copy. It is already borrowed");
+  }
+  bookCopy.borrowerId = borrowedId;
+};
+
 const db = {
   getAllBooks,
   getAllAuthors,
   getAllUsers,
+  getAllBookCopies,
+  getBookCopiesByBookId,
   getBookById,
   getAuthorById,
   getUserById,
+  getBookCopiesByUserId,
+  getBookCopyById,
+  borrowBookCopy,
 };
 module.exports = db;

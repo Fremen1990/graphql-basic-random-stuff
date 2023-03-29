@@ -13,6 +13,9 @@ const getAnythingByExternalId = (externalId, db) => {
     case "Book": {
       return db.getBookById(dbId);
     }
+    case "BookCopy": {
+      return db.getBookCopyById(dbId);
+    }
     case "Author": {
       return db.getAuthorById(dbId);
     }
@@ -33,13 +36,28 @@ const resolvers = {
     author: (rootValue, { id }, { db }) => db.getAuthorById(toDbId(id)),
     user: (rootValue, { id }, { db }) => db.getUserById(toDbId(id)),
     anything: (rootValue, { id }, { db }) => getAnythingByExternalId(id, db),
+    everything: (rootValue, args, { db }) => [
+      ...db.getAllBookCopies(),
+      ...db.getAllAuthors(),
+      ...db.getAllUsers(),
+      ...db.getAllBooks(),
+    ],
   },
+
+  Mutation: {
+    borrowBookCopy: (rootValue, { id }, { db, currentUserDbId }) => {
+      db.borrowBookCopy(toDbId(id), currentUserDbId);
+      return db.getBookCopyById(toDbId(id));
+    },
+  },
+
   Book: {
     id: (book) => toExternalId(book.id, "Book"),
     author: (book, args, { db }) => db.getAuthorById(book.authorId),
     cover: (book) => ({
       path: book.coverPath,
     }),
+    copies: (book, args, { db }) => db.getBookCopiesByBookId(book.id),
   },
   Author: {
     id: (author) => toExternalId(author.id, "Author"),
@@ -53,11 +71,22 @@ const resolvers = {
       path: avatar.imagePath,
     }),
   },
+  BookCopy: {
+    id: (bookCopy) => toExternalId(bookCopy.id, "BookCopy"),
+    owner: (bookCopy, args, { db }) => db.getUserById(bookCopy.ownerId),
+    book: (bookCopy, args, { db }) => db.getBookById(bookCopy.bookId),
+    borrower: (bookCopy, args, { db }) =>
+      bookCopy.borrowerId && db.getUserById(bookCopy.borrowerId),
+  },
   Image: {
     url: (image, args, { baseAssetsUrl }) => baseAssetsUrl + image.path,
   },
   User: {
     id: (user) => toExternalId(user.id, "User"),
+    ownedBookCopies: (user, args, { db }) =>
+      db.getBookCopiesByUserId(toExternalId(user.id, "User")),
+    // borrowedBookCopies: (user, args, { db }) =>
+    //   db.getBookCopiesByUserId(user.id),
   },
   Anything: {
     __resolveType: (anything) => {
@@ -69,6 +98,9 @@ const resolvers = {
       }
       if (anything.info) {
         return "User";
+      }
+      if (anything.ownerId) {
+        return "BookCopy";
       }
       return null;
     },

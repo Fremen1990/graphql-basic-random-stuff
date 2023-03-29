@@ -2,6 +2,7 @@ const { gql } = require("apollo-server");
 const typeDefs = gql`
   schema {
     query: Query
+    mutation: Mutation
   }
   """
   ### The object representing a books
@@ -18,8 +19,15 @@ const typeDefs = gql`
     users: [User!]!
     user(id: ID!): User
     anything(id: ID!): Anything
+    everything: [Anything!]!
   }
-  union Anything = Book | Author | User
+
+  type Mutation {
+    borrowBookCopy(id: ID!): BookCopy!
+  }
+
+  union Anything = Book | Author | User | BookCopy
+
   type Author {
     id: ID!
     name: String!
@@ -33,6 +41,7 @@ const typeDefs = gql`
     cover: Image!
     author: Author!
     description: String!
+    copies: [BookCopy!]!
   }
   type User {
     id: ID!
@@ -40,6 +49,8 @@ const typeDefs = gql`
     email: String!
     info: String!
     avatar: Avatar!
+    ownedBookCopies: [BookCopy]!
+    borrowedBookCopies: [BookCopy!]!
   }
   type Image {
     url: String!
@@ -47,6 +58,12 @@ const typeDefs = gql`
   type Avatar {
     image: Image!
     color: String!
+  }
+  type BookCopy {
+    id: ID!
+    owner: User!
+    book: Book!
+    borrower: User
   }
 `;
 
