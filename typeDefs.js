@@ -20,22 +20,29 @@ const typeDefs = gql`
     user(id: ID!): User
     anything(id: ID!): Anything
     everything: [Anything!]!
+    resources: [Resource!]!
+    resource(id: ID!): Resource
   }
 
   type Mutation {
     borrowBookCopy(id: ID!): BookCopy!
+    returnBookCopy(id: ID!): BookCopy!
   }
 
   union Anything = Book | Author | User | BookCopy
 
-  type Author {
+  interface Resource {
+    id: ID!
+  }
+
+  type Author implements Resource {
     id: ID!
     name: String!
     photo: Image!
     bio: String!
     books: [Book!]!
   }
-  type Book {
+  type Book implements Resource {
     id: ID!
     title: String!
     cover: Image!
@@ -43,7 +50,7 @@ const typeDefs = gql`
     description: String!
     copies: [BookCopy!]!
   }
-  type User {
+  type User implements Resource {
     id: ID!
     name: String!
     email: String!
@@ -59,7 +66,7 @@ const typeDefs = gql`
     image: Image!
     color: String!
   }
-  type BookCopy {
+  type BookCopy implements Resource {
     id: ID!
     owner: User!
     book: Book!

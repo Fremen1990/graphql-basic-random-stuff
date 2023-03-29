@@ -15,6 +15,7 @@ const getBookById = (id) => {
   return {
     ...data.books[index],
     id,
+    resourceType: "Book",
     authorId: getAuthorIdByBookId(id),
   };
 };
@@ -29,6 +30,7 @@ const getAuthorById = (id) => {
   return {
     ...data.authors[toIndex(id)],
     id,
+    resourceType: "Author",
     bookIds: data.bookIdsByAuthorId[id],
   };
 };
@@ -43,6 +45,7 @@ const getUserById = (id) => {
   }
   return {
     ...data.users[toIndex(id)],
+    resourceType: "User",
     id,
   };
 };
@@ -52,6 +55,7 @@ const getAllUsers = () =>
 
 const getBookCopyById = (id) => ({
   ...data.bookCopies[toIndex(id)],
+  resourceType: "BookCopy",
   id,
 });
 
@@ -71,9 +75,40 @@ const borrowBookCopy = (bookCopyId, borrowedId) => {
   }
   const bookCopy = data.bookCopies[index];
   if (!!bookCopy.borrowerId) {
-    throw new Error("Cannot borrow the bool copy. It is already borrowed");
+    throw new Error("Cannot borrow the book copy. It is already borrowed");
   }
   bookCopy.borrowerId = borrowedId;
+};
+
+const returnBookCopy = (bookCopyId, borrowedId) => {
+  const index = toIndex(bookCopyId);
+  if (index < 0 || index >= data.bookCopies.length) {
+    throw new Error("Could not find book copy");
+  }
+  const bookCopy = data.bookCopies[index];
+  if (!bookCopy.borrowerId) {
+    throw new Error("Cannot return the book copy. It has not been borrowed");
+  }
+  bookCopy.borrowerId = null;
+};
+
+const getResourceByIdAndType = (id, type) => {
+  switch (type) {
+    case "Book": {
+      return getBookById(id);
+    }
+    case "BookCopy": {
+      return getBookCopyById(id);
+    }
+    case "Author": {
+      return getAuthorById(id);
+    }
+    case "User": {
+      return getUserById(id);
+    }
+    default:
+      return null;
+  }
 };
 
 const db = {
@@ -88,5 +123,7 @@ const db = {
   getBookCopiesByUserId,
   getBookCopyById,
   borrowBookCopy,
+  returnBookCopy,
+  getResourceByIdAndType,
 };
 module.exports = db;
