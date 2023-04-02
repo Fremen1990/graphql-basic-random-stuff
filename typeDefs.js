@@ -1,42 +1,54 @@
 const { gql } = require("apollo-server");
 const typeDefs = gql`
-  schema {
-    query: Query
-    mutation: Mutation
-  }
-  """
-  ### The object representing a books
-
-  It contains the following fields:
-  - text: String
-  - author: String
-  """
   type Query {
-    authors: [Author!]!
+    authors(searchQuery: String! = ""): [Author!]!
     author(id: ID!): Author
     books(searchQuery: String! = ""): [Book!]!
     book(id: ID!): Book
-    users: [User!]!
+    users(searchQuery: String! = ""): [User!]!
     user(id: ID!): User
-    anything(id: ID!): Anything
-      @deprecated(reason: "No longer supported, use 'resource' instead")
-    everything: [Anything!]!
-      @deprecated(reason: "No longer supported, use 'resources' instead")
-    resources: [Resource!]!
     resource(id: ID!): Resource
+    resources: [Resource!]!
   }
-
   type Mutation {
-    borrowBookCopy(id: ID!): BookCopy!
-    returnBookCopy(id: ID!): BookCopy!
+    borrowBookCopy(id: ID!): BookCopy
+    returnBookCopy(id: ID!): BookCopy
+    createUser(input: CreateUserInput!): UserMutationResult!
+    updateUser(input: UpdateUserInput!): UserMutationResult!
+    deleteUser(id: ID!): DeleteUserResult!
+    resetData: ResetResult!
   }
-
-  union Anything = Book | Author | User | BookCopy
-
+  input CreateUserInput {
+    name: String!
+    info: String!
+    email: String!
+  }
+  input UpdateUserInput {
+    id: ID!
+    name: String!
+    info: String!
+  }
+  interface MutationResult {
+    success: Boolean!
+    message: String!
+  }
+  type ResetResult {
+    success: Boolean!
+    message: String!
+  }
+  type DeleteUserResult {
+    success: Boolean!
+    message: String!
+    id: ID
+  }
+  type UserMutationResult {
+    success: Boolean!
+    message: String!
+    user: User!
+  }
   interface Resource {
     id: ID!
   }
-
   type Author implements Resource {
     id: ID!
     name: String!
@@ -58,7 +70,7 @@ const typeDefs = gql`
     email: String!
     info: String!
     avatar: Avatar!
-    ownedBookCopies: [BookCopy]!
+    ownedBookCopies: [BookCopy!]!
     borrowedBookCopies: [BookCopy!]!
   }
   type Image {
@@ -70,8 +82,8 @@ const typeDefs = gql`
   }
   type BookCopy implements Resource {
     id: ID!
-    owner: User!
     book: Book!
+    owner: User!
     borrower: User
   }
 `;
